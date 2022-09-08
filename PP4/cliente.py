@@ -9,7 +9,7 @@ class Cliente:
         url = 'http://172.31.82.61:6001/jogo/escore'
 
         while True:
-            operacao = randint(1, 1)
+            operacao = randint(0, 1)
             if operacao == 0:
                 resposta = requests.get(url).text
                 print("Escore Atual: " + resposta)
