@@ -12,6 +12,7 @@ class Coordenador(threading.Thread):
         threading.Thread.__init__(self)
         self.socketCliente = socket
         self.pilha = []
+        self.lock = False
         print('Coordenador Pronto')
 
     def run(self):
@@ -22,19 +23,20 @@ class Coordenador(threading.Thread):
 
     def __handling_connection(self, conn, addr):
         id = conn.recv(1024)
-        while True:
-            if len(self.pilha) != 0:
-                self.pilha.append(id)
-                print('Cliente ' + str(id) + ' adicionado na pilha')
-                while True:
-                    if id not in self.pilha:
-                        break
-            conn.send('OK'.encode())
-            aux = conn.recv(1024)
-            if len(self.pilha) != 0:
-                del self.pilha[0]
-            break
+        if self.lock:
+            self.pilha.append(id)
+            print('Cliente ' + str(id) + ' adicionado na pilha')
+            while True:
+                if id not in self.pilha:
+                    print('Cliente ' + str(id) + ' saiu na pilha')
+                    break
+        self.lock = True
+        conn.send('OK'.encode())
+        conn.recv(1024)
         conn.close()
+        self.lock = False
+        if len(self.pilha) != 0:
+            del self.pilha[0]
 
 
 class Cliente:
