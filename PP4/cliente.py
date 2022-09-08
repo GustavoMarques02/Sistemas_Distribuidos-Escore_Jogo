@@ -6,7 +6,7 @@ from random import randint
 class Cliente:
 
     def __init__(self):
-        url = 'http://localhost:8080/jogo/escore'
+        url = 'http://172.31.82.61:6001/jogo/escore'
 
         while True:
             operacao = randint(1, 1)
