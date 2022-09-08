@@ -22,4 +22,4 @@ def setEscore(novoEscore):
 
 if __name__ == '__main__':
     j = Jogo()
-    app.run(host='localhost', port='8080')
+    app.run(host='172.31.82.61', port='6001')
