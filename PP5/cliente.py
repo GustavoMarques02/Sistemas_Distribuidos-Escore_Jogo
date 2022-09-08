@@ -43,37 +43,36 @@ class Cliente:
 
         if len(sys.argv) == 3 and sys.argv[2] == 'Coordenador':
             socketCliente = socket(AF_INET, SOCK_STREAM)
-            socketCliente.bind(('localhost', 5001))
+            socketCliente.bind(('172.31.95.205', 6002))
             socketCliente.listen(10)
             coordenador = Coordenador(socketCliente)
             coordenador.start()
 
-        else:
-            url = 'http://localhost:8080/jogo/escore'
+        url = 'http://172.31.82.61:6001/jogo/escore'
 
-            while True:
-                socketServidor = socket(AF_INET, SOCK_STREAM)
-                try:
-                    socketServidor.connect(('localhost', 5001))
-                except:
-                    print("Host nao encontrado!")
-                    exit(1)
+        while True:
+            socketServidor = socket(AF_INET, SOCK_STREAM)
+            try:
+                socketServidor.connect(('172.31.95.205', 6002))
+            except:
+                print("Host nao encontrado!")
+                exit(1)
 
-                socketServidor.send(str(id).encode())
-                confirmacao = socketServidor.recv(1024)
-                if confirmacao.decode() == 'OK':
-                    operacao = randint(0, 1)
-                    if operacao == 0:
-                        resposta = requests.get(url).text
-                        print("Escore Atual: " + resposta)
-                    elif operacao == 1:
-                        resposta = int(requests.get(url).text)
-                        novoEscore = resposta + randint(1, 10)
-                        requests.post(url + '/' + str(novoEscore))
-                        print("Novo Escore: " + str(novoEscore))
-                    socketServidor.send('Finalizado'.encode())
-                socketServidor.close()
-                time.sleep(randint(1, 2))
+            socketServidor.send(str(id).encode())
+            confirmacao = socketServidor.recv(1024)
+            if confirmacao.decode() == 'OK':
+                operacao = randint(0, 1)
+                if operacao == 0:
+                    resposta = requests.get(url).text
+                    print("Escore Atual: " + resposta)
+                elif operacao == 1:
+                    resposta = int(requests.get(url).text)
+                    novoEscore = resposta + randint(1, 10)
+                    requests.post(url + '/' + str(novoEscore))
+                    print("Novo Escore: " + str(novoEscore))
+                socketServidor.send('Finalizado'.encode())
+            socketServidor.close()
+            time.sleep(randint(1, 2))
 
 
 if __name__ == '__main__':
