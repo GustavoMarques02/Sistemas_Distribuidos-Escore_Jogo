@@ -25,6 +25,7 @@ class Coordenador(threading.Thread):
         while True:
             if len(self.pilha) != 0:
                 self.pilha.append(id)
+                print('Cliente ' + str(id) + ' adicionado na pilha')
                 while True:
                     if id not in self.pilha:
                         break
