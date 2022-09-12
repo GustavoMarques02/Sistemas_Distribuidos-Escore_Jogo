@@ -75,7 +75,7 @@ class Cliente:
                     print("Novo Escore: " + str(novoEscore))
                 socketServidor.send('Finalizado'.encode())
             socketServidor.close()
-            time.sleep(randint(1, 2))
+            time.sleep(1)
 
 
 if __name__ == '__main__':
