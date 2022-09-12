@@ -58,7 +58,7 @@ class Cliente:
             try:
                 socketServidor.connect(('172.31.95.205', 6002))
             except:
-                print("Host nao encontrado!")
+                print("Coordenador nao encontrado!")
                 exit(1)
 
             socketServidor.send(str(id).encode())
