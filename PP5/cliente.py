@@ -47,7 +47,7 @@ class Cliente:
         if len(sys.argv) == 3 and sys.argv[2] == 'Coordenador':
             socketCliente = socket(AF_INET, SOCK_STREAM)
             socketCliente.bind(('172.31.95.205', 6002))
-            socketCliente.listen(10)
+            socketCliente.listen(3)
             coordenador = Coordenador(socketCliente)
             coordenador.start()
 
