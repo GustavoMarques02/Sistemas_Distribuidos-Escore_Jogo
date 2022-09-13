@@ -25,10 +25,10 @@ class Coordenador(threading.Thread):
         id = conn.recv(1024)
         if self.lock:
             self.pilha.append(id)
-            print('Cliente ' + str(id) + ' adicionado na pilha')
+            print('Processo ' + str(id) + ' adicionado na pilha')
             while True:
                 if id not in self.pilha:
-                    print('Cliente ' + str(id) + ' saiu na pilha')
+                    print('Processo ' + str(id) + ' saiu na pilha')
                     break
         self.lock = True
         conn.send('OK'.encode())
