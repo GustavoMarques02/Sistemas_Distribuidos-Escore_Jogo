@@ -62,7 +62,7 @@ class Cliente:
                 exit(1)
 
             socketServidor.send(self.id.encode())
-            confirmacao = socketServidor.recv(1024).decode()
+            confirmacao = socketServidor.recv(1024)
             if confirmacao.decode() == 'OK':
                 time.sleep(3)
                 operacao = randint(0, 1)
