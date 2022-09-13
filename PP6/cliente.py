@@ -21,17 +21,18 @@ class Cliente:
             coordenador = Coordenador(self.coordIp)
             coordenador.start()
 
-        threading.Thread(target=self.esperarMensagem()).start()
+        threading.Thread(target=self.esperarMensagem).start()
 
         while True:
             if not self.eleicao:
                 socketServidor = socket(AF_INET, SOCK_STREAM)
                 try:
                     socketServidor.connect((self.coordIp, 6002))
-                    socketServidor.send(str(id).encode())
-                    confirmacao = socketServidor.recv(1024)
+                    socketServidor.send(self.id.encode())
+                    confirmacao = socketServidor.recv(1024).decode()
 
                     if confirmacao.decode() == 'OK':
+                        time.sleep(3)
                         operacao = randint(0, 1)
                         if operacao == 0:
                             resposta = requests.get(self.url).text
@@ -44,7 +45,6 @@ class Cliente:
                         socketServidor.send('Finalizado'.encode())
 
                     socketServidor.close()
-                    time.sleep(randint(1, 2))
                 except:
                     print("Coordenador nao respondeu!")
                     self.fazerEleicao()

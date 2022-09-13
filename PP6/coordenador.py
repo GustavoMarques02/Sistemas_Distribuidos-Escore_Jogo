@@ -16,16 +16,16 @@ class Coordenador(threading.Thread):
         while True:
             (conn, addr) = self.socketCliente.accept()
             threading.Thread(
-                target=self.__handling_connection(conn)).start()
+                target=self.__handling_connection, args=(conn)).start()
 
     def __handling_connection(self, conn):
-        id = conn.recv(1024)
+        id = conn.recv(1024).decode()
         if self.lock:
             self.pilha.append(id)
-            print('Processo ' + str(id) + ' adicionado na pilha')
+            print('Processo ' + id + ' adicionado na pilha')
             while True:
                 if id not in self.pilha:
-                    print('Processo ' + str(id) + ' saiu na pilha')
+                    print('Processo ' + id + ' saiu da pilha')
                     break
         self.lock = True
         conn.send('OK'.encode())

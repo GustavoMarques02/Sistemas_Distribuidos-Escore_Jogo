@@ -19,16 +19,16 @@ class Coordenador(threading.Thread):
         while True:
             (conn, addr) = self.socketCliente.accept()
             threading.Thread(
-                target=self.__handling_connection(conn, addr)).start()
+                target=self.__handling_connection, args=(conn, addr)).start()
 
     def __handling_connection(self, conn, addr):
-        id = conn.recv(1024)
+        id = conn.recv(1024).decode()
         if self.lock:
             self.pilha.append(id)
-            print('Processo ' + str(id) + ' adicionado na pilha')
+            print('Processo ' + id + ' adicionado na pilha')
             while True:
                 if id not in self.pilha:
-                    print('Processo ' + str(id) + ' saiu na pilha')
+                    print('Processo ' + id + ' saiu da pilha')
                     break
         self.lock = True
         conn.send('OK'.encode())
@@ -61,9 +61,10 @@ class Cliente:
                 print("Coordenador nao encontrado!")
                 exit(1)
 
-            socketServidor.send(str(id).encode())
-            confirmacao = socketServidor.recv(1024)
+            socketServidor.send(self.id.encode())
+            confirmacao = socketServidor.recv(1024).decode()
             if confirmacao.decode() == 'OK':
+                time.sleep(3)
                 operacao = randint(0, 1)
                 if operacao == 0:
                     resposta = requests.get(url).text
@@ -75,7 +76,6 @@ class Cliente:
                     print("Novo Escore: " + str(novoEscore))
                 socketServidor.send('Finalizado'.encode())
             socketServidor.close()
-            time.sleep(1)
 
 
 if __name__ == '__main__':
