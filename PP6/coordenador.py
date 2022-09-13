@@ -16,9 +16,9 @@ class Coordenador(threading.Thread):
         while True:
             (conn, addr) = self.socketCliente.accept()
             threading.Thread(
-                target=self.__handling_connection, args=(conn)).start()
+                target=self.__handling_connection, args=(conn, addr)).start()
 
-    def __handling_connection(self, conn):
+    def __handling_connection(self, conn, addr):
         id = conn.recv(1024).decode()
         if self.lock:
             self.pilha.append(id)
