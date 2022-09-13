@@ -85,6 +85,8 @@ class Cliente:
                     print('Processo ' + str[id] + ' nao encontrado')
                 finally:
                     socketNovoCoord.close()
+        else:
+            print('Esperando eleicao terminar')
 
     def esperarMensagem(self):
         socketMensagem = socket(AF_INET, SOCK_STREAM)
@@ -94,12 +96,14 @@ class Cliente:
             (conn, addr) = socketMensagem.accept()
             mensagem = conn.recv(1024)
             if mensagem == 'ELECTION' and not self.eleicao:
+                print('Mensagem de eleicao recebida')
                 self.eleicao = True
                 conn.send('OK'.encode())
                 self.fazerEleicao()
             elif mensagem in const.registry.values():
                 self.coordIp = mensagem
                 self.eleicao = False
+                print('Novo coordenador recebido')
             conn.close()
 
 
