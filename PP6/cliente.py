@@ -81,7 +81,7 @@ class Cliente:
                     socketNovoCoord.connect((ip, 6003))
                     socketNovoCoord.send(self.coordIp.encode())
                 except:
-                    print('Processo ' + str[id] + ' nao encontrado')
+                    print('Processo ' + str(id) + ' nao encontrado')
                 finally:
                     socketNovoCoord.close()
         else:
