@@ -59,11 +59,11 @@ class Cliente:
             try:
                 socketEleicao.connect((ip, 6003))
                 socketEleicao.send('ELECTION'.encode())
-                confirmacao = socketEleicao.recv(1024)
+                confirmacao = socketEleicao.recv(1024).decode()
                 if confirmacao == 'OK':
                     eleito = False
             except:
-                print('Processo ' + str[id] + ' nao encontrado')
+                print('Processo ' + str(id) + ' nao encontrado')
             finally:
                 socketEleicao.close()
 
@@ -93,7 +93,7 @@ class Cliente:
         socketMensagem.listen(3)
         while True:
             (conn, addr) = socketMensagem.accept()
-            mensagem = conn.recv(1024)
+            mensagem = conn.recv(1024).decode()
             if mensagem == 'ELECTION' and not self.eleicao:
                 print('Mensagem de eleicao recebida')
                 self.eleicao = True
